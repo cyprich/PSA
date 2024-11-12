@@ -18,9 +18,9 @@ class Eth_frame:
         self._dst_mac: str = "01:00:0c:cc:cc:cc"
         self._src_mac: str = src_mac
         self._length: int = 0
-        self._payload: str = ""
+        self._payload: Any = ""
 
-    def add_payload(self, payload: str):
+    def add_payload(self, payload: Any):
         self._payload = payload
 
     def to_bytes(self) -> bytes:
@@ -44,9 +44,9 @@ class LLC:
         self._ctrl: int = 0x03
         self._oui: str = "00000C"
         self._pid: int = 0x2000
-        self._payload: str = ""
+        self._payload: Any = ""
 
-    def add_payload(self, payload: str):
+    def add_payload(self, payload: Any):
         self._payload = payload
 
     def to_bytes(self):
@@ -63,9 +63,9 @@ class CDP_header:
         self._version: int = 1
         self._ttl: int = 180
         self._checksum: int = 0
-        self._payload: List[str] = []
+        self._payload: List[Any] = []
 
-    def add_payload(self, payload: str):
+    def add_payload(self, payload: Any):
         self._payload.append(payload)
 
     def to_bytes(self):
@@ -111,11 +111,42 @@ class Platform_TLV(Device_ID_TLV):
         self._type = 0x0006
 
 
+def set_bit(in_var: Any, bit_number: int):
+    return in_var | (1 << (bit_number - 1))
+
+
+class Capabilities_TLV(TLV):
+    def __init__(self, router=False, swich=False, host=True):
+        TLV.__init__(self, 0x0004)
+        self._length += 4
+        self._capabilities = 0
+
+
 if __name__ == "__main__":
     IFACES.show()
 
     # sys  3  wlo1  AzureWaveTec:41:a1:69  172.20.53.194  fe80::5800:d47:d96c:7f72
-    # 10:68:38:41:hostnaa1:69
+    # 10:68:38:41:a1:69
 
     iface = IFACES.dev_from_index(3)
     sock = conf.L2socket(iface=iface)
+
+    eth = Eth_frame("10:68:38:41:a1:69")
+    llc = LLC()
+    cdp = CDP_header()
+
+    tlv_dev = Device_ID_TLV("arch")
+    cdp.add_payload(tlv_dev)
+
+    tlv_soft = Software_TLV("Arch Linux x86_64")
+    cdp.add_payload(tlv_soft)
+
+    tlv_platform = Platform_TLV()
+    cdp.add_payload(tlv_platform)
+
+    llc.add_payload(cdp)
+
+    eth.add_payload(llc)
+    eth_bytes = eth.to_bytes()
+
+    sock.send()
