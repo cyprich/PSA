@@ -4,14 +4,14 @@ Materiály k predmetu Python v sieťových aplikáciach
 
 Osnova predmetu
 
-1. Zaklady Pythonu
-2. Zaklady Pythonu
-3. Git
-4. Klient - Server aplikacia
-5. Klient - Server aplikacia
-6. CDP
-7. CDP
-8. DNS
-9. REST API
-10. RSS
-11. Automatizacia
+1. [Zaklady Pythonu](./w1/)
+2. [Zaklady Pythonu](./w2/)
+3. [Git](./w3/)
+4. [Klient - Server aplikacia](./w4/)
+5. [Klient - Server aplikacia](./w5/)
+6. [CDP](./w6/)
+7. [CDP](./w7/)
+8. [DNS](./w8/)
+9. [REST API](./w9/)
+10. [RSS](./w10/)
+11. [Automatizacia](./w11/)
