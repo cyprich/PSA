@@ -40,11 +40,15 @@ def nastavOkno(okno: tk.Tk):
 
     entryURL = tk.Entry(okno)
     entryURL.grid(row=1, column=0, padx=20, ipadx=240)
-    
+
     outputText = tk.Text(okno)
     outputText.grid(row=2, column=0)
 
-    gombik = tk.Button(okno, text="Davaj!", command=lambda: outputText.insert(tk.END, get_rss(entryURL.get())))
+    gombik = tk.Button(
+        okno,
+        text="Davaj!",
+        command=lambda: outputText.insert(tk.END, get_rss(entryURL.get())),
+    )
     gombik.grid(row=1, column=1)
 
     entryURL.insert(0, "https://www.bazos.sk/rss.php")
@@ -59,4 +63,3 @@ if __name__ == "__main__":
     okno = tk.Tk()
     nastavOkno(okno)
     okno.mainloop()
-
